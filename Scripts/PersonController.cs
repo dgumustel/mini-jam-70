@@ -6,81 +6,93 @@ public class PersonController : MonoBehaviour
 {
     private GameManager gameManager;
     private GameObject player;
+    private GameObject imp;
     //public Transform parent;
     public bool isOnPlayer = false;
+    public PlayerController1 playerController;
+    public bool isOnImp = false;
+    public ImpController impController;
+    public Animation anim;
+
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController1>();
         player = GameObject.Find("Player");
+        //imp = GameObject.Find("Imp");
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        if (isOnPlayer)
+        if (isOnImp && imp == null)
         {
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, player.transform.position.z);
-            
+            Destroy(gameObject);
         }
-        else
+        else if (isOnImp)
         {
-            gameObject.transform.SetParent(null);
+            MovePerson(imp, 1f);
         }
+        else if (isOnPlayer)
+        {
+            MovePerson(player, 1f);
+        }
+
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && playerController.count < 3)
         {
-            transform.SetParent(player.transform);
             isOnPlayer = true;
+            isOnImp = false;
+            playerController.count += 1;
+            Debug.Log("People on player = " + playerController.count);
         }
     } 
 
-    /*
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isOnPlayer = false;
-        }
-    }*/
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        /*
-        if (other.gameObject.tag.Equals("Player"))
-        {
-            //SetParent(parent);
-        }*/
-
         if (other.gameObject.tag.Equals("Heaven"))
         {
             Destroy(gameObject);
             gameManager.UpdateScore(5);
+            playerController.count = 0;
+            Debug.Log("People on player = " + playerController.count);
+            playerController.hasPerson = false;
+            //Debug.Log("# on player " + playerController.count);
         }
         
-        if (other.gameObject.tag.Equals("Hell"))
+        else if (other.gameObject.tag.Equals("Hell"))
         {
             Destroy(gameObject);
             gameManager.UpdateScore(-5);
+            //anim.Play();
+            Debug.Log("soul lost to hell");
         }
-    }  
-    
+        
+        else if (other.gameObject.tag.Equals("Imp"))
+        {
+            //transform.SetParent(other.transform);
+            isOnImp = true;
+            isOnPlayer = false;
+            impController = other.GetComponent<ImpController>();
+            impController.hasPerson = true;
+            imp = other.gameObject;
+            playerController.count -= 1;
+            Debug.Log("People on player = " + playerController.count);
+        }
 
-/*
-    public void SetParent(Transform newParent)
-    {
-        gameObject.transform.SetParent(newParent);
-        Debug.Log("Person's Parent: " + gameObject.transform.parent.name);
     }
-    
-    public void SetParent(GameObject newParent)
+
+    private void MovePerson(GameObject vehicle, float offsetY)
     {
-        gameObject.transform.parent = newParent.transform;
-        Debug.Log("Person's Parent: " + gameObject.transform.parent.name);
-    }*/
+
+        transform.position = new Vector3(vehicle.transform.position.x, vehicle.transform.position.y + +offsetY, vehicle.transform.position.z);
+    }
+
 }

@@ -5,19 +5,22 @@ using UnityEngine;
 public class PeopleSpawner : MonoBehaviour
 {   
     public GameObject person;
-    Vector2 personPos;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        personPos = new Vector2(0, 0);
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         StartCoroutine(SpawnPerson());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!gameManager.isGameActive)
+        {
+            StopAllCoroutines();
+        }
     }
 
     IEnumerator SpawnPerson()
@@ -27,14 +30,15 @@ public class PeopleSpawner : MonoBehaviour
             yield return new WaitForSeconds(3);
 
             Instantiate(person, RandomSpawnPos(), transform.rotation);
-            
+            Debug.Log(Time.time);
             yield return null;
         }
     }
-
     Vector2 RandomSpawnPos()
     {
         float randomXPos = Random.Range(-8, 4);
         return new Vector2(randomXPos, 5);
     }
+
+
 }
