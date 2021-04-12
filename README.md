@@ -6,9 +6,11 @@ Our entry, "Heaven's Little Helper" (title subject to change) is a 2D casual gam
 
 Contributors: Derya Gumustel, Eli Cheung
 
+This project ended despite the remaining to do list.
+
 Eli's to do:
-* create animations for: 
-  * hellfire 
+* create animations for:
+  * hellfire
   * cannon fire
   * successful delivery
 
@@ -28,5 +30,4 @@ Other things to do:
 * add a powerup ability so player can make demons disappear (powerup may be award for bringing people to heaven)
 * add a pause button
 * balance the point system
-* let friends play test! 
-
+* let friends play test!
