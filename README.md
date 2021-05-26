@@ -1,4 +1,4 @@
-# minijam70
+# Mini Jam #70
 
 These are files for a game entry for [Mini Jam #70](https://itch.io/jam/mini-jam-70-heaven). A game jam is an event where people race to make a game from scratch in a short amount of time, often 48 or 72 hours. The theme of this jam is "Heaven" and the limitation is that the player must be an inanimate object. 
 
